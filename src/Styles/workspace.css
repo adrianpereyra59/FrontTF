@@ -1,0 +1,70 @@
+.workspace-page, .workspace-detail {
+  padding: 20px;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+}
+
+.workspace-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.btn {
+  background: #0b76ef;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn.alt {
+  background: #e6eefc;
+  color: #0b76ef;
+}
+
+.btn.small {
+  padding: 6px 8px;
+  font-size: 13px;
+}
+
+.btn.danger, .btn.danger.small {
+  background: #d64545;
+}
+
+.workspace-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.workspace-item {
+  padding: 12px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.workspace-desc { color: #555; font-size: 14px; margin-top: 4px; }
+
+.workspace-form input,
+.workspace-form textarea,
+.workspace-add-user input,
+.workspace-add-user select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  margin: 6px 0;
+}
+
+.user-list ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.user-item { display: flex; justify-content: space-between; align-items: center; padding: 8px; border: 1px solid #f0f0f0; border-radius: 6px; }
+.user-actions { display: flex; gap: 8px; align-items: center; }
+.workspace-error { color: #9b1c1c; margin: 8px 0; }
+.workspace-success { color: #135e01; margin: 8px 0; }

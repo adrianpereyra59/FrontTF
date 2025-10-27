@@ -1,0 +1,68 @@
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useWorkspaces } from '../../Context/WorkspaceContext';
+import WorkspaceForm from '../../Components/WorkspaceForm';
+import '../../Styles/workspace.css';
+
+export default function Workspaces() {
+  const { workspaces, loading, createWorkspace, deleteWorkspace } = useWorkspaces();
+  const [creating, setCreating] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleCreate = async (payload) => {
+    setError('');
+    try {
+      await createWorkspace(payload);
+      setCreating(false);
+    } catch (err) {
+      setError(err.body?.message || 'Error al crear workspace');
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!confirm('¿Eliminar workspace? Esta acción es irreversible.')) return;
+    try {
+      await deleteWorkspace(id);
+    } catch (err) {
+      alert(err.body?.message || 'No se pudo eliminar');
+    }
+  };
+
+  return (
+    <div className="workspace-page">
+      <header className="workspace-header">
+        <h1>Workspaces</h1>
+        <button onClick={() => setCreating(true)} className="btn">+ Nuevo workspace</button>
+      </header>
+
+      {creating && (
+        <div className="workspace-create">
+          <WorkspaceForm onSubmit={handleCreate} onCancel={() => setCreating(false)} />
+        </div>
+      )}
+
+      {error && <div className="workspace-error">{error}</div>}
+
+      {loading ? (
+        <div>Cargando workspaces...</div>
+      ) : (
+        <ul className="workspace-list">
+          {workspaces.map(ws => (
+            <li key={ws._id || ws.id} className="workspace-item">
+              <div>
+                <Link to={`/workspaces/${ws._id || ws.id}`} className="workspace-link">
+                  <strong>{ws.name}</strong>
+                </Link>
+                <div className="workspace-desc">{ws.description}</div>
+              </div>
+              <div className="workspace-actions">
+                <Link to={`/workspaces/${ws._id || ws.id}`} className="btn small">Abrir</Link>
+                <button onClick={() => handleDelete(ws._id || ws.id)} className="btn danger small">Eliminar</button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}

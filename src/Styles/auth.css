@@ -1,0 +1,67 @@
+* { box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; 
+  background-color: #121c21;
+}
+
+.auth-page {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background-color: #121c21;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: #121c21;
+  border-radius: 10px;
+  box-shadow: 0 6px 24px #2a3942;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #f2ffff;
+  border: #ffffff 1px solid;
+}
+
+.auth-card h2 { margin: 0 0 8px; }
+
+.auth-card input {
+  padding: 10px;
+  background-color: #2a3942;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.auth-card button {
+  margin-top: 8px;
+  padding: 10px;
+  border: none;
+  background: #25cd64;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.auth-card input {
+  color: #f2ffff;
+}
+
+.auth-links {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.auth-links a {
+  color: #f2ffff;
+  text-decoration: none;
+  font-size: 14px;
+}
+.auth-error { color: #9b1c1c; margin-bottom: 6px; }
+.auth-success { color: #135e01; margin-bottom: 6px; }
