@@ -1,17 +1,19 @@
-// Wrapper HTTP para frontend — usa en orden VITE_API_URL, VITE_APP_URL_API, URL_API_BACKEND
+// Wrapper HTTP para frontend — usa VITE_API_URL / VITE_APP_URL_API / URL_API_BACKEND como posibles sources
 const BASE = import.meta.env.VITE_API_URL
   || import.meta.env.VITE_APP_URL_API
   || import.meta.env.URL_API_BACKEND
-  || 'http://localhost:4000';
+  || 'http://localhost:8080';
 
-let token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+const STORAGE_KEY = 'auth_token';
+
+let token = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null;
 
 export function setToken(t) {
   token = t;
   try {
     if (typeof window !== 'undefined') {
-      if (t) localStorage.setItem('token', t);
-      else localStorage.removeItem('token');
+      if (t) localStorage.setItem(STORAGE_KEY, t);
+      else localStorage.removeItem(STORAGE_KEY);
     }
   } catch (e) {
     // ignore storage errors (e.g. Safari private mode)
@@ -63,4 +65,5 @@ export default {
       body: typeof body === 'object' && !(body instanceof FormData) ? JSON.stringify(body) : body,
     }),
   delete: (path) => request(path, { method: 'DELETE' }),
+  BASE,
 };

@@ -15,13 +15,16 @@ export function WorkspaceProvider({ children }) {
 
   useEffect(() => {
     loadWorkspaces();
+    // eslint-disable-next-line
   }, []);
 
   async function loadWorkspaces() {
     setLoading(true);
     try {
-      const data = await api.get('/workspaces');
-      setWorkspaces(data || []);
+      // Backend expone /api/workspace
+      const data = await api.get('/api/workspace');
+      // Respuesta: { status: 'OK', message, data: { workspaces: [...] } }
+      setWorkspaces((data && data.data && data.data.workspaces) || []);
     } catch (err) {
       console.error('Error cargando workspaces', err);
       setWorkspaces([]);
@@ -31,37 +34,45 @@ export function WorkspaceProvider({ children }) {
   }
 
   async function createWorkspace(payload) {
-    // payload: { name, description }
-    const ws = await api.post('/workspaces', payload);
-    setWorkspaces(prev => [ws, ...prev]);
+    // payload: { name, description } en frontend; backend espera { name, url_img }
+    const body = {
+      name: payload.name,
+      url_img: payload.url_img || payload.url || ''
+    };
+    const ws = await api.post('/api/workspace', body);
+    // backend responde con status 201 y message, no devuelve necesariamente el objeto creado.
+    // Para asegurar consistencia recargamos la lista.
+    await loadWorkspaces();
     return ws;
   }
 
   async function deleteWorkspace(id) {
-    await api.delete(`/workspaces/${id}`);
+    await api.delete(`/api/workspace/${id}`);
     setWorkspaces(prev => prev.filter(w => w._id !== id && w.id !== id));
-    // If currently viewing detail you may navigate away outside
     navigate('/workspaces');
   }
 
   async function getWorkspace(id) {
-    return api.get(`/workspaces/${id}`);
+    const res = await api.get(`/api/workspace/${id}`);
+    // Respuesta: { ok:true, message, data: { workspace } }
+    return res && res.data && res.data.workspace ? res.data.workspace : res;
   }
 
   async function addUser(workspaceId, { email, role = 'member' }) {
-    const res = await api.post(`/workspaces/${workspaceId}/users`, { email, role });
-    // Optionally refresh list
+    // Nota: backend actual no expone este endpoint; si lo implementas será similar a:
+    // POST /api/workspace/:id/users
+    const res = await api.post(`/api/workspace/${workspaceId}/users`, { email, role });
     await loadWorkspaces();
     return res;
   }
 
   async function removeUser(workspaceId, userId) {
-    await api.delete(`/workspaces/${workspaceId}/users/${userId}`);
-    return getWorkspace(workspaceId); // caller can refresh view
+    const res = await api.delete(`/api/workspace/${workspaceId}/users/${userId}`);
+    return getWorkspace(workspaceId);
   }
 
   async function assignRole(workspaceId, userId, role) {
-    const res = await api.put(`/workspaces/${workspaceId}/users/${userId}/role`, { role });
+    const res = await api.put(`/api/workspace/${workspaceId}/users/${userId}/role`, { role });
     return res;
   }
 
