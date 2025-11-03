@@ -1,19 +1,19 @@
 // Wrapper HTTP para frontend — usa VITE_API_URL / VITE_APP_URL_API / URL_API_BACKEND como posibles sources
+import LOCALSTORAGE_KEYS from '../constants/localstorage';
+
 const BASE = import.meta.env.VITE_API_URL
   || import.meta.env.VITE_APP_URL_API
   || import.meta.env.URL_API_BACKEND
   || 'http://localhost:8080';
 
-const STORAGE_KEY = 'auth_token';
-
-let token = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null;
+let token = typeof window !== 'undefined' ? localStorage.getItem(LOCALSTORAGE_KEYS.AUTH_TOKEN) : null;
 
 export function setToken(t) {
   token = t;
   try {
     if (typeof window !== 'undefined') {
-      if (t) localStorage.setItem(STORAGE_KEY, t);
-      else localStorage.removeItem(STORAGE_KEY);
+      if (t) localStorage.setItem(LOCALSTORAGE_KEYS.AUTH_TOKEN, t);
+      else localStorage.removeItem(LOCALSTORAGE_KEYS.AUTH_TOKEN);
     }
   } catch (e) {
     // ignore storage errors (e.g. Safari private mode)
