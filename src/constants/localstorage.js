@@ -1,3 +1,4 @@
+// src/constants/localstorage.js
 const LOCALSTORAGE_KEYS = {
   AUTH_TOKEN: 'auth_token',
 };
