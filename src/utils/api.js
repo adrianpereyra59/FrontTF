@@ -1,8 +1,9 @@
-// Wrapper HTTP para frontend — usa VITE_API_URL / VITE_APP_URL_API / URL_API_BACKEND como posibles sources
-const BASE = import.meta.env.VITE_API_URL
-  || import.meta.env.VITE_APP_URL_API
-  || import.meta.env.URL_API_BACKEND
-  || 'http://localhost:8080';
+// src/utils/api.js
+const BASE =
+  import.meta.env.VITE_API_URL ||
+  import.meta.env.VITE_APP_URL_API ||
+  import.meta.env.URL_API_BACKEND ||
+  'http://localhost:8080';
 
 const STORAGE_KEY = 'auth_token';
 
@@ -16,13 +17,12 @@ export function setToken(t) {
       else localStorage.removeItem(STORAGE_KEY);
     }
   } catch (e) {
-    // ignore storage errors (e.g. Safari private mode)
+    // ignore storage errors
   }
 }
 
 async function request(path, options = {}) {
   const headers = Object.assign({}, options.headers || {});
-  // Si body es FormData no setear Content-Type para que fetch lo calcule
   if (!headers['Content-Type'] && !(options.body instanceof FormData)) {
     headers['Content-Type'] = 'application/json';
   }
